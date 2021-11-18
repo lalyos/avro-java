@@ -3,4 +3,7 @@ schema-compile:
   		compile schema user.avsc .
 
 compile:
-	javac -cp "lib/*" example/avro/User.java
+	javac -cp ".:lib/*" Generator.java
+
+run: compile
+	java -cp ".:lib/*" Generator
