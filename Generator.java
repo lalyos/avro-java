@@ -1,4 +1,8 @@
 import example.avro.User;
+import org.apache.avro.specific.*;
+import org.apache.avro.file.*;
+import org.apache.avro.io.*;
+import java.io.*;
 
 public class Generator {
     public static void main(String[] args) {
@@ -20,6 +24,20 @@ public class Generator {
         System.out.println("u1: "+ user1);
         System.out.println("u2: "+ user2);
         System.out.println("u3: "+ user3);
+
+        try{
+        // Serialize user1, user2 and user3 to disk
+        DatumWriter<User> userDatumWriter = new SpecificDatumWriter<User>(User.class);
+        DataFileWriter<User> dataFileWriter = new DataFileWriter<User>(userDatumWriter);
+        dataFileWriter.create(user1.getSchema(), new File("users.avro"));
+        dataFileWriter.append(user1);
+        dataFileWriter.append(user2);
+        dataFileWriter.append(user3);
+        dataFileWriter.close();
+        } catch(Exception e) {
+            System.out.println(e);
+
+        }
     }
 
 }
